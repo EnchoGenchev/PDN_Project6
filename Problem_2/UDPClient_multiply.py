@@ -10,8 +10,8 @@ def main():
     messageBytes = message.encode()
     clientSocket.sendto(messageBytes, (serverIP, serverPort))
     
-    serverResponse, serverAddress = clientSocket.recvfrom(2048)
-    print("From Server:", serverResponse.decode())
+    modifiedMessageBytes, serverAddress = clientSocket.recvfrom(2048)
+    print("From Server:", modifiedMessageBytes.decode())
     
     clientSocket.close()
 

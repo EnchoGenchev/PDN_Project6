@@ -1,22 +1,27 @@
-import socket
+from socket import *
 
 def solve():
+    serverIP = '127.0.0.1'
     serverPort = 12345
-    serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    serverSocket.bind(('', serverPort))
+    serverAddress = (serverIP, serverPort)
+    serverSocket = socket(AF_INET, SOCK_STREAM)
+    serverSocket.bind(serverAddress)
     serverSocket.listen(1)
     
-    print("TCP Server is ready to receive on port 12345...")
+    print("server is ready to receive on port 12345")
     
     while True:
-        connectionSocket, addr = serverSocket.accept()
+        connectionSocket, clientAddress = serverSocket.accept()
+        clientIP, clientPort = clientAddress
+
+        #try catch since some invalid inputs mess up numstrings
         try:
             message = connectionSocket.recv(1024).decode()
             if not message:
                 continue
 
             #print recieved message
-            print(f"Received from client: {message}")
+            print(f"message from {clientIP}:{clientPort} = {message}")
             
             numStrings = [x.strip() for x in message.split(',')]
             nums = [float(x) for x in numStrings if x]
@@ -24,15 +29,13 @@ def solve():
             if not nums:
                 result = "Invalid input"
             else:
-                productValue = 1.0
+                product = 1.0
                 for n in nums:
-                    productValue *= n
-                result = str(productValue)
+                    product *= n
+                result = str(product)
                 
         except ValueError:
             result = "Invalid input"
-        except Exception as e:
-            result = f"Error: {str(e)}"
             
         connectionSocket.send(result.encode())
         connectionSocket.close()
