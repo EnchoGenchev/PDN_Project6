@@ -6,16 +6,17 @@ class MRLongestWord(MRJob):
         #string with all the characters
         alphabet = "abcdefghijklmnopqrstuvwxyz"
         
-        # Replace hyphens and em-dashes with spaces
-        line = line.replace('-', ' ').replace('—', ' ')
+        #replace hyphens and dashes with spaces
+        line = line.replace('-', ' ')
+        line = line.replace('—', ' ')
         
         chunks = line.split()
         
         for chunk in chunks:
-            raw_chunk = chunk.lower()
+            got_chunk = chunk.lower()
             
             #only keep letters
-            word = "".join([char for char in raw_chunk if char in alphabet])
+            word = "".join([char for char in got_chunk if char in alphabet])
             
             #make sure word starts with valid char
             if word and word[0] in alphabet:
@@ -27,6 +28,8 @@ class MRLongestWord(MRJob):
 
         for word in words:
             word_len = len(word)
+            
+            #gets rid of previously max length words
             if word_len > max_length:
                 max_length = word_len
                 longest_words = {word}
