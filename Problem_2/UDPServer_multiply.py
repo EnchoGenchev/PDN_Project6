@@ -11,6 +11,9 @@ def solve():
         message, clientAddress = serverSocket.recvfrom(2048)
         decodedMsg = message.decode()
         
+        #print recieved message
+        print(f"Received from {clientAddress}: {decodedMsg}")
+
         try:
             numStrings = [x.strip() for x in decodedMsg.split(',')]
             nums = [float(x) for x in numStrings if x]

@@ -14,6 +14,9 @@ def solve():
             message = connectionSocket.recv(1024).decode()
             if not message:
                 continue
+
+            #print recieved message
+            print(f"Received from client: {message}")
             
             numStrings = [x.strip() for x in message.split(',')]
             nums = [float(x) for x in numStrings if x]
