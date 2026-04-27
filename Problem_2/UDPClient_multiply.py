@@ -1,13 +1,14 @@
-import socket
+from socket import *
 
 def main():
     serverIP = '127.0.0.1'
     serverPort = 12345
     
-    clientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    clientSocket = socket(AF_INET, SOCK_DGRAM)
     
-    messageContent = input("Enter a list of comma-separated numbers: ")
-    clientSocket.sendto(messageContent.encode(), (serverIP, serverPort))
+    message = input("Enter a list of comma-separated numbers: ")
+    messageBytes = message.encode()
+    clientSocket.sendto(messageBytes, (serverIP, serverPort))
     
     serverResponse, serverAddress = clientSocket.recvfrom(2048)
     print("From Server:", serverResponse.decode())

@@ -1,33 +1,37 @@
-import socket
+from socket import *
 
 def solve():
     serverPort = 12345
-    serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    serverSocket.bind(('', serverPort))
+    serverSocket = socket(AF_INET, SOCK_DGRAM)
+    serverIP = '127.0.0.1'
+    serverPort = 12345
+    serverAddress = (serverIP, serverPort)
+    serverSocket.bind(serverAddress)
     
-    print("UDP Server is ready to receive on port 12345...")
+    print("server ready to receive on port 12345")
     
     while True:
-        message, clientAddress = serverSocket.recvfrom(2048)
-        decodedMsg = message.decode()
+        messageBytes, clientAddress = serverSocket.recvfrom(2048)
+        message = messageBytes.decode()
         
         #print recieved message
-        print(f"Received from {clientAddress}: {decodedMsg}")
+        print(f"Received from {clientAddress}: {message}")
 
         try:
-            numStrings = [x.strip() for x in decodedMsg.split(',')]
+            numStrings = [x.strip() for x in message.split(',')]
             nums = [float(x) for x in numStrings if x]
             
             if not nums:
                 result = "Invalid input"
             else:
-                productValue = 1.0
+                product = 1.0
                 for n in nums:
-                    productValue *= n
-                result = str(productValue)
+                    product *= n
+                result = str(product)
                 
         except ValueError:
             result = "Invalid input"
+                
             
         serverSocket.sendto(result.encode(), clientAddress)
 
